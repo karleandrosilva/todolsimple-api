@@ -58,3 +58,5 @@ Isso fará com que as mensagens no terminal apareçam coloridas, facilitando a d
    ```
 
 ---
+
+# Aula 02 — Criando o Model de User
