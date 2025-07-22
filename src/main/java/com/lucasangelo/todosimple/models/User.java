@@ -1,5 +1,7 @@
 package com.lucasangelo.todosimple.models;
 
+import java.util.Objects;
+
 // import java.util.ArrayList;
 // import java.util.List;
 
@@ -12,6 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 // Anotações do spring: @
 
@@ -32,6 +37,8 @@ public class User {
     @Column(name = "id", unique = true) // 8 - Garante que os valores sejam únicos (sem repetições). É opcional, mas é bom deixar para garantir
     private Long id; //5 - Defini o id como Long, pois suportam muitos registros sem risco de estouro
 
+    // 16 - Garante que a senha não seja mostrada nas respostas da api via json
+    @JsonProperty(access = Access.WRITE_ONLY)
 
     // 10 -  Adiciono a dependência "spring-boot-starter-validation" no pom.xml para ter validações automáticas nos campos, para nao deixar o erro cair no BD. E ela faz com que posso usar o notnull e notempty
     @Column(name = "username", length = 100, nullable = false, unique = true ) // 9 - Define que é uma coluna: com no máximo 100 caracteres, não pode ser nulo e deve ser única (sem repetições
@@ -44,19 +51,78 @@ public class User {
     @NotNull(groups = {CreateUser.class, UpdateUser.class}) // uso um array
     @NotEmpty(groups = {CreateUser.class, UpdateUser.class}) 
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 60)
-    private String password;
 
-    /**
-     * 
-     */
-    public User() {
-    }
+    private String password;
 
     // lista de tarefas do usuario
     //private List<Task> tasks = new ArrayList<Task>();
 
     // construtores
 
+    // 12 - construtor padrao (necessário para o JPA instanciar a entidade)
+    public User() {
+    }
+
+    // construtor com todos campos da entidade
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
+    // 13 - getters e setters (acessores e modificadores dos atributos)
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
+    // 14 - Define quando dois objetos User são considerados iguais. Considera dois objetos User iguais se eles tiverem o mesmo id, username e password.
+    @Override
+
+    public boolean equals (Object obj) {
+        if (obj == this)
+            return true; // Se os dois objetos forem exatamente o mesmo na memória, então são iguais
+        if (obj == null)
+            return false; // Se o objeto comparado for nulo, eles não são iguais
+        if (!(obj instanceof User)) 
+            return false; // Se o objeto não for da classe User, eles não são comparáveis
+        User other = (User) obj; // transforma o Object genérico em um User
+        if (this.id == null)
+            if (other.id != null) 
+                return false;
+            else if (!this.id.equals(other.id))
+                return false;
+        return Objects.equals(this.id, other.id) && Objects.equals(this.username, other.username)
+                && Objects.equals(this.password, other.password);
+    }
+    
+    // 15 - Garante que objetos iguais (pelo equals()) funcionem corretamente em coleções como HashSet. É uma estrtura padrão "receita pronta"
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( this.id == null ? 0: this.id.hashCode());
+        return result;
+    }
 }
 
