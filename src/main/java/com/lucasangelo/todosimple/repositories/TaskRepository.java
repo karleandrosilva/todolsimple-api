@@ -15,4 +15,4 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     // O Spring cria automaticamente a query com base no nome do método (findByUser_Id)
     List<Task> findByUser_Id(Long id); // "User" é o nome do atributo na entidade Task
 
-}
+} 
