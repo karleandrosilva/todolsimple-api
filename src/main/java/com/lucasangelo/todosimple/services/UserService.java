@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lucasangelo.todosimple.models.User;
-import com.lucasangelo.todosimple.repositories.TaskRepository;
 import com.lucasangelo.todosimple.repositories.UserRepository;
 
 // Service: é a penúltima camada da aplicação API no Spring Boot. Acima dela está apenas o Controller, que é o ponto onde as requisições do front-end chegam.
@@ -27,9 +26,6 @@ public class UserService {
     // importar os repository atributos
     @Autowired // Injeção de dependência: o Spring cria e injeta automaticamente uma instância do repositório,basicamente é meio que um construtor automático do Spring Boot
     private UserRepository userRepository;
-
-    @Autowired 
-    private TaskRepository taskRepository;
 
     // getters e setters não são necessários aqui
 
@@ -56,9 +52,6 @@ public class UserService {
         obj.setId(null); // Define o ID como null para garantir que o usuário será criado como um novo registro (INSERT)
 
         obj = this.userRepository.save(obj); // Salva o usuário no bd 
-
-        // caso o usaurio ja adicionou task dentro
-        this.taskRepository.saveAll(obj.getTasks()); // Salva todas as tarefas associadas ao usuário, se houver
         return obj; // Retorna o usuário criado
     }
     
