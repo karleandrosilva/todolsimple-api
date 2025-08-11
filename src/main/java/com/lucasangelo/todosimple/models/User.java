@@ -15,7 +15,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -100,7 +99,7 @@ public class User {
 
     // getters e setter do task
 
-    @JsonIgnore // 17 - Ignora a lista de tarefas quando serializar o usuário para JSON, pois não preciso que o front veja as tarefas do usuário quando buscar o usuário
+    @JsonIgnore // 17 - Ignora a lista de tarefas quando serializar o usuário para JSON, pois não preciso que o front veja as tarefas do usuário quando buscar o usuário 
     public List<Task> getTasks() {
         return this.tasks;
     }
