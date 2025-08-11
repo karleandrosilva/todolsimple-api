@@ -15,10 +15,10 @@ import com.lucasangelo.todosimple.repositories.TaskRepository;
 @Service
 public class TaskService {
 
-    @Autowired
+    @Autowired 
     private TaskRepository taskRepository;
 
-    @Autowired
+    @Autowired 
     private UserService userService;
 
     // procura tarefa por ID
@@ -28,14 +28,13 @@ public class TaskService {
             "Tarefa não encontrada! ID: " + id + ", Tipo: " + Task.class.getName()));
     }
 
-
     //create
     @Transactional // Garante que a operação de criação será feita em uma transação, garantindo a integridade dos dados.
     public Task create(Task obj) {
         User user = this.userService.findById(obj.getUser().getId()); // Busca o usuário associado à tarefa
-        obj.setId(null);
+        obj.setId(null); 
         obj.setUser(user); 
-        obj = this.taskRepository.save(obj);
+        obj = this.taskRepository.save(obj); 
         return obj; // Salva a tarefa no banco de dados
     }
 
@@ -57,6 +56,4 @@ public class TaskService {
             throw new RuntimeException("Não é possível deletar pois há entidades relacionadas!");
         }
     }
-
-    
 }
