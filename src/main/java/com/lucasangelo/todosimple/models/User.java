@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @Table (name = User.TABLE_NAME) // 3 - Defini que é para criar a tabela no BD e que especifica o nome da tabela com o valor da constante TABLE_NAME que é "user"
 public class User {
 
-    // 11 - Crio duas interfaces para validar, se não é notnull e notempty e o size
+    // 11 - Cria duas interfaces para validar, se não é notnull e notempty e o size
     public interface CreateUser {}
     public interface UpdateUser {}
     
@@ -101,6 +101,7 @@ public class User {
     // getters e setter do task
 
     @JsonIgnore // 17 - Ignora a lista de tarefas quando serializar o usuário para JSON, pois não preciso que o front veja as tarefas do usuário quando buscar o usuário 
+
     public List<Task> getTasks() {
         return this.tasks;
     }
