@@ -1,6 +1,7 @@
 // AULA 10
 package com.lucasangelo.todosimple.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -27,6 +28,17 @@ public class TaskService {
         return task.orElseThrow(() ->  new RuntimeException(
             "Tarefa não encontrada! ID: " + id + ", Tipo: " + Task.class.getName()));
     }
+
+    // MÉTODO DE BUSCA DE TODAS AS TASK DO USUARIO (AULA 12)
+
+
+    public List<Task> findAllByUserId(Long userId) {
+        
+        List<Task> tasks = this.taskRepository.findByUser_Id(userId);
+        return tasks;
+        
+    }
+
 
     //create
     @Transactional // Garante que a operação de criação será feita em uma transação, garantindo a integridade dos dados.
@@ -57,3 +69,5 @@ public class TaskService {
         }
     }
 }
+
+
