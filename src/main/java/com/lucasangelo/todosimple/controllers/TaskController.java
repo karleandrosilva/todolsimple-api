@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucasangelo.todosimple.models.Task;
 import com.lucasangelo.todosimple.services.TaskService;
+import com.lucasangelo.todosimple.services.UserService;
 
 @RestController
 @RequestMapping("/task") // 1 - Define a rota base para este Controller, que será "/task".
@@ -34,6 +35,11 @@ public class TaskController {
     @Autowired // 3 - Injeção de dependência automatica do TaskService, que é responsável pela lógica de negócio relacionada às tarefas.
     private TaskService taskService; // 2 - Declaração do serviço de tarefa, que será injetado pelo Spring.
 
+
+    // AULA 13 (fazer com que mostre que esse usuario não existe)
+    @Autowired 
+    private UserService userService; //
+
     @GetMapping("/{id}") // 6 - Mapeia requisições GET para a rota "/task", que será usada para buscar todas as tarefas.
 
     // MÉTODO DE BUSCAR PELO ID DA TASK
@@ -45,6 +51,7 @@ public class TaskController {
     // MÉTODO DE BUSCAR TODAS AS TASKS DO USUARIO PELO ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
+        userService.findById(userId); // AULA 13 - verifica se o usuário existe. Se não existir, lança exceção e interrompe a execução.
         List<Task> objs = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(objs);
     }
@@ -72,8 +79,8 @@ public class TaskController {
 
     // MÉTODO DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long Id) {
-        this.taskService.delete(Id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        this.taskService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
