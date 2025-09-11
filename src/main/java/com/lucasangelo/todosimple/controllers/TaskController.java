@@ -51,7 +51,7 @@ public class TaskController {
     // MÉTODO DE BUSCAR TODAS AS TASKS DO USUARIO PELO ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
-        userService.findById(userId); // AULA 13 - verifica se o usuário existe. Se não existir, lança exceção e interrompe a execução.
+        this.userService.findById(userId); // AULA 13 - verifica se o usuário existe. Se não existir, lança exceção e interrompe a execução.
         List<Task> objs = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(objs);
     }
