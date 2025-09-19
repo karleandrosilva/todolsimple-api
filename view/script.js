@@ -15,7 +15,7 @@ function show(tasks) {
             <th scope="col">#</th>
             <th scope="col">Description</th>
             <th scope="col">Username</th>
-            <th scope="col">User Id</th>
+            <th scope="col">User Id<th>
         </thead>`;
 
     // 
@@ -28,22 +28,27 @@ function show(tasks) {
                 <td>${task.user.id}</td>
             </tr>
         `;
-
-        document.getElementById("tasks").innerHTML = tab;
-        
     }
+    document.getElementById("tasks").innerHTML = tab;
 }
 
 // função (assincrona) principal que vai acessar a API
 async function getAPI(url) {
-    const response = await fetch(url, { method: "GET"})
+    try {
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
+        }
 
-    var data = await response.json();
-    console.log(data)
-    if (response) 
-        hideLoader();
-    show(data);
-
+        var data = await response.json();
+        console.log(data)
+        if (response) 
+            hideLoader();
+        show(data);
+        } catch (error) {
+            hideLoader();
+            document.getElementById("tasks").innerHTML
+        }
 }
 
 getAPI(url);

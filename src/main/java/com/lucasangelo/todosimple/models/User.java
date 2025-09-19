@@ -38,8 +38,6 @@ public class User {
     @Column(name = "id", unique = true) // 8 - Garante que os valores sejam únicos (sem repetições). É opcional, mas é bom deixar para garantir
     private Long id; //5 - Defini o id como Long, pois suportam muitos registros sem risco de estouro
 
-    // 16 - Garante que a senha não seja mostrada nas respostas da api via json
-    @JsonProperty(access = Access.WRITE_ONLY)
 
     // 10 -  Adiciono a dependência "spring-boot-starter-validation" no pom.xml para ter validações automáticas nos campos, para nao deixar o erro cair no BD. E ela faz com que posso usar o notnull e notempty
     @Column(name = "username", length = 100, nullable = false, unique = true ) // 9 - Define que é uma coluna: com no máximo 100 caracteres, não pode ser nulo e deve ser única (sem repetições
@@ -47,6 +45,9 @@ public class User {
     @NotEmpty(groups = CreateUser.class) // Quando criar um usuario, não pode por uma string vazia
     @Size(groups = CreateUser.class, min = 2, max = 100) // Quando criar um usuario, tera um minimo de caractere e o maximo
     private String username;
+
+    // 16 - Garante que a senha não seja mostrada nas respostas da api via json
+    @JsonProperty(access = Access.WRITE_ONLY)
 
     @Column(name = "password", length = 60, nullable = false)
     @NotNull(groups = {CreateUser.class, UpdateUser.class}) // uso um array
